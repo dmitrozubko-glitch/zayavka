@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Заявка на Deputy Head HRB</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0f1115;
+            color: #e6e6e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 700px;
+            background: #161a22;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.6);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 26px;
+            color: #ffffff;
+        }
+        label {
+            display: block;
+            margin: 18px 0 6px;
+            font-weight: 600;
+        }
+        input, textarea {
+            width: 100%;
+            background: #0f1115;
+            border: 1px solid #2a2f3a;
+            border-radius: 10px;
+            padding: 12px 14px;
+            color: #ffffff;
+            font-size: 15px;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #4c8dff;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+        button {
+            margin-top: 25px;
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #4c8dff, #6f5bff);
+            color: #ffffff;
+            cursor: pointer;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .note {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #9aa0ad;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Заявка на Deputy Head HRB</h1>
+        <form id="hrbForm">
+            <label>1. Ім'я Прізвище | Static:</label>
+            <input type="text" placeholder="Ваше ім'я та static" />
+
+            <label>2. Вік:</label>
+            <input type="number" placeholder="Ваш вік" />
+
+            <label>3. Ваш онлайн:</label>
+            <input type="text" placeholder="Наприклад: 4–6 годин" />
+
+            <label>4. Чому саме ви повинні стати на цю посаду?</label>
+            <textarea></textarea>
+
+            <label>5. Як ви діятимете у разі конфлікту у відділі?</label>
+            <textarea></textarea>
+
+            <label>6. Чи готові брати відповідальність і проявляти ініціативу?</label>
+            <textarea></textarea>
+
+            <label>7. Що для вас означає дисципліна в команді?</label>
+            <textarea></textarea>
+
+            <label>8. Ваші очікування від посади Dep. HRB</label>
+            <textarea></textarea>
+
+            <button type="submit">Надіслати заявку</button>
+        </form>
+        <div class="note">Dark theme • Deputy Head HRB Application</div>
+    </div>
+<script>
+const webhookURL = "https://discord.com/api/webhooks/1457465165925847224/ZtkekcjiyzCp2eSMrGExFIZSUOL_6AmboT4APdKBQR_DSNLoH9qzgwMaTJF_fizrH8et";
+
+document.getElementById('hrbForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const labels = Array.from(this.querySelectorAll('label'));
+    const fields = Array.from(this.querySelectorAll('input, textarea'));
+
+    let fieldsData = fields.map((el, i) => ({
+        name: labels[i] ? labels[i].innerText : `Поле ${i+1}`,
+        value: el.value.trim() !== '' ? el.value : 'Не вказано',
+        inline: false
+    }));
+
+    fetch(webhookURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username: 'HRB Applications',
+            embeds: [
+                {
+                    title: 'Заявка на Deputy Head HRB',
+                    color: 5793266,
+                    fields: fieldsData,
+                    footer: { text: 'HRB System • Web Form' },
+                    timestamp: new Date().toISOString()
+                }
+            ]
+        })
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Webhook error');
+        alert('Заявку успішно надіслано!');
+        this.reset();
+    })
+    .catch(err => {
+        alert('Помилка при відправці заявки. Перевір webhook URL.');
+        console.error(err);
+    });
+});
+</script>
+</body>
+</html>
+
